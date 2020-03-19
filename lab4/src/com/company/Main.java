@@ -50,6 +50,6 @@ public class Main {
                 .forEach(System.out::println);
 
         Faker faker = new Faker();
-        System.out.println(faker.name());
+        System.out.println(faker.name().fullName());
     }
 }
