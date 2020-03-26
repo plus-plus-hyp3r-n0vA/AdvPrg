@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+import static java.awt.Color.WHITE;
+
 public class ControlPanel extends JPanel {
     final MainFrame frame;
     JButton saveBtn = new JButton("Save");
@@ -28,6 +30,10 @@ public class ControlPanel extends JPanel {
         loadBtn.addActionListener(this::load);
         resetBtn.addActionListener(this::reset);
         exitBtn.addActionListener(this::exit);
+        add(saveBtn);
+        add(loadBtn);
+        add(resetBtn);
+        add(exitBtn);
 // ...TODO
     }
     private void save(ActionEvent e) {
@@ -41,9 +47,9 @@ public class ControlPanel extends JPanel {
         } catch (IOException ex) { System.err.println(ex); }
     }
     private void reset(ActionEvent e) {
-        try {
-            ImageIO.write(frame.canvas.image, "PNG", new File("d:/test.png"));
-        } catch (IOException ex) { System.err.println(ex); }
+            frame.canvas.graphics.setColor(WHITE);
+            frame.canvas.graphics.fillRect(0,0, DrawingPanel.W, DrawingPanel.H);
+            frame.canvas.repaint();
     }
     private void exit(ActionEvent e) {
         try {
