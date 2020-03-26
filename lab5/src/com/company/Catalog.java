@@ -33,9 +33,19 @@ public class Catalog implements Serializable {
     public void add(Document doc) {
         documents.add(doc);
     }
+
+    public List<Document> getDocuments() {
+        return new ArrayList<Document>(documents);
+    }
+
     public Document findById(String id) {
         return documents.stream()
                 .filter(d -> d.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public Document findByName(String name) {
+        return documents.stream()
+                .filter(d -> d.getName().equals(name)).findFirst().orElse(null);
     }
 }
 
