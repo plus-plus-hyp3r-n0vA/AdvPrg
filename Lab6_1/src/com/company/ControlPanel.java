@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,39 +12,60 @@ import static java.awt.Color.WHITE;
 
 public class ControlPanel extends JPanel {
     final MainFrame frame;
+    final JFileChooser fc = new JFileChooser();
+
+    private int mode = 0;
+
     JButton saveBtn = new JButton("Save");
     JButton loadBtn = new JButton("Load");
     JButton resetBtn = new JButton("Reset");
     JButton exitBtn = new JButton("Exit");
-    //create all buttons (Load, Reset, Exit)
- //...TODO
+    JButton selectBtn = new JButton("Select");
+    JButton drawBtn = new JButton("Draw");
+    JButton deleteBtn = new JButton("Delete Shape");
+
     public ControlPanel(MainFrame frame) {
         this.frame = frame; init();
     }
     private void init() {
-        //change the default layout manager (just for fun)
-        setLayout(new GridLayout(1, 4));
-        //add all buttons ...TODO
+        setLayout(new GridLayout(1, 6));
 
-        //configure listeners for all buttons
         saveBtn.addActionListener(this::save);
         loadBtn.addActionListener(this::load);
         resetBtn.addActionListener(this::reset);
         exitBtn.addActionListener(this::exit);
+        deleteBtn.addActionListener(this::deleteShape);
+        drawBtn.addActionListener(this::drawShape);
         add(saveBtn);
         add(loadBtn);
         add(resetBtn);
         add(exitBtn);
-// ...TODO
+        add(drawBtn);
+        add(deleteBtn);
     }
     private void save(ActionEvent e) {
         try {
-            ImageIO.write(frame.canvas.image, "PNG", new File("d:/test.png"));
+            int returnVal = fc.showSaveDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                //This is where a real application would open the file.
+                ImageIO.write(frame.canvas.image, "PNG", file);
+            }
         } catch (IOException ex) { System.err.println(ex); }
     }
     private void load(ActionEvent e) {
         try {
-            ImageIO.write(frame.canvas.image, "PNG", new File("d:/test.png"));
+            int returnVal = fc.showOpenDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                //This is where a real application would open the file.
+
+                BufferedImage image = ImageIO.read(file);
+                frame.canvas.graphics.drawImage(image, 0, 0, this);
+                frame.canvas.repaint();
+            }
         } catch (IOException ex) { System.err.println(ex); }
     }
     private void reset(ActionEvent e) {
@@ -52,10 +74,21 @@ public class ControlPanel extends JPanel {
             frame.canvas.repaint();
     }
     private void exit(ActionEvent e) {
-        try {
-            ImageIO.write(frame.canvas.image, "PNG", new File("d:/test.png"));
-        } catch (IOException ex) { System.err.println(ex); }
+        if (frame.isDisplayable()) {
+            frame.dispose();
+        }
     }
-// ...TODO
+
+    private void drawShape(ActionEvent e) {
+        mode = 0;
+    }
+
+    private void deleteShape(ActionEvent e) {
+        mode = 1;
+    }
+
+    public int getMode() {
+        return mode;
+    }
 }
 
