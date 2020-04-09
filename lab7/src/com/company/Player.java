@@ -6,7 +6,7 @@ import java.util.List;
 public class Player implements Runnable {
     private String name;
     private Board board;
-    private List<Token> myTokens;
+    private LinkedList<Token> myTokens = new LinkedList<>();
 
     public Player(String name, Board board) {
         this.name = name;
@@ -23,13 +23,12 @@ public class Player implements Runnable {
 
     @Override
     public void run() {
-        Token t;
-        while(true){
+        while (true) {
             try {
-                t = board.getToken();
+                Token t;
+                t = board.getToken(myTokens.size()!=0 ? myTokens.getLast() : null);
                 myTokens.add(t);
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 break;
             }
         }

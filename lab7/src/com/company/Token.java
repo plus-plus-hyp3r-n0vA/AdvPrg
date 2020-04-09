@@ -14,4 +14,11 @@ public class Token {
     public int getNumber() {
         return number;
     }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "number=" + number +
+                '}';
+    }
 }
