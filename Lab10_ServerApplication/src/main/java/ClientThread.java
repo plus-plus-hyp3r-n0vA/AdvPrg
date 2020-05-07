@@ -63,7 +63,6 @@ public class ClientThread extends Thread {
                                 if (game == null)
                                     out.println("Error: unknown game");
                                 else {
-                                    // TO DO: de verificat daca persoana este deja intr-un joc pornit
                                     if (player == null)
                                         player = new Player("Player_" + gameServer.playerId, gameServer.playerId);
                                     game.addPlayer(player);
@@ -74,14 +73,11 @@ public class ClientThread extends Thread {
                             out.println("Error: Unknown command");
                             break;
                         case "submit":
-                            System.out.println(tokens[0]);
-                            System.out.println(tokens[1]);
-                            System.out.println(tokens[2]);
-                            System.out.println(tokens[3]);
+
                             if (tokens.length == 4 && tokens[1].equals("move")) {
                                 try {
                                     if (game != null) {
-                                        System.out.println("turn:" + game.getTurn());
+//                                        System.out.println("turn:" + game.getTurn());
                                         game.move(player.getId(), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
                                         int playerId = game.gameOver();
                                         if(playerId == -1)

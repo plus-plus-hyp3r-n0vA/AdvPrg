@@ -47,7 +47,7 @@ public class Game {
         if(id != turn + 1)
             throw new InvalidMoveException("Error: Now is the turn of " + players.stream()
                     .filter(p -> p.getId() == turn+1)
-                    .findFirst().orElse(null)); //TO DO: "STRING" + null
+                    .findFirst().orElse(null)); //TO DO: "STRING" + null..
         board.put(id, i, j);
         turn = (turn + 1) % players.size();
     }
