@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Lab10_ClientApplication:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Lab10_ClientApplication_jar</output-path>
+    <root id="archive" name="Lab10_ClientApplication.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Lab10_ClientApplication" />
+    </root>
+  </artifact>
+</component>
