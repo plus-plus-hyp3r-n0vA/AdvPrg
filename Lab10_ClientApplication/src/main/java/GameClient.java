@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class GameClient {
-    private boolean readyToRead = false;
+    private boolean readyToRead = true;
     private boolean exit = false;
 
     public boolean isExit() {
@@ -34,31 +34,36 @@ public class GameClient {
             new GetStatusThread(this, in, out).start();
 
             // Send a request to the server
-            Scanner scan = new Scanner(System.in);
+            BufferedReader scan = new BufferedReader(new InputStreamReader(System.in));
+
+//            Scanner scan = new Scanner(System.in);
             while (true) {
                 try {
                     System.out.print("Input: ");
-                    readyToRead = true;
                     // while waiting the client to do something, we can also read a status msg from server
-                    String request = scan.nextLine();
+                    String request = scan.readLine();
 
                     if (request.equals("exit")) {
                         out.println("exit");
                         exit = true;
                         break;
                     }
-                    out.println(request);
 
                     if (request.equals("stop")) break;
-
                     readyToRead = false;
+
                     Thread.sleep(400); // we make sure that GetStatusThread does not read anything from the server
 
+                    out.println(request);
+                    out.flush();
+
                     String response = in.readLine();
-                    System.out.println(response);
+                    readyToRead = true;
+                    System.out.println("main thread resp:" + response);
 
                 } catch (SocketTimeoutException ignore) { }
             }
+            scan.close();
         } catch (UnknownHostException e) {
             System.err.println("No server listening... " + e);
         } catch (InterruptedException e) {

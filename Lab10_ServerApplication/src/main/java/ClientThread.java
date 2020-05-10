@@ -35,7 +35,7 @@ public class ClientThread extends Thread {
                 try {
 
                     Instant end = Instant.now();
-                    if(Duration.between(start, end).getSeconds() > 180) {out.println("exit connection"); break;}
+                    if(Duration.between(start, end).getSeconds() > 580) {out.println("exit connection"); break;}
 
                     String request = in.readLine();
 
@@ -77,7 +77,7 @@ public class ClientThread extends Thread {
                             if (tokens.length == 4 && tokens[1].equals("move")) {
                                 try {
                                     if (game != null) {
-//                                        System.out.println("turn:" + game.getTurn());
+                                        System.out.println("turn:" + game.getTurn());
                                         game.move(player.getId(), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
                                         int playerId = game.gameOver();
                                         if(playerId == -1)
@@ -124,14 +124,20 @@ public class ClientThread extends Thread {
                     out.flush();
                 } catch (SocketTimeoutException e) {
                     if(!success && game != null && game.isStarted() && game.getTurn() + 1 == player.getId()) {
-                        out.print("Your turn! \n The board:\n" + game.getBoard());
+                        System.out.println(player.getName());
+                        Thread.sleep(200);
+                        out.printf("Your turn!\nThe board:\n%s",game.getBoard());
+                        out.flush();
                         start = Instant.now();
                         while (!success) {
                             try {
                                 Instant end = Instant.now();
-                                if(Duration.between(start, end).getSeconds() > 180) break infiniteLoop;
+                                if(Duration.between(start, end).getSeconds() > 580) break infiniteLoop;
 
                                 String request = in.readLine();
+
+                                System.out.println("SocketTimeoutException: " + request);
+
                                 if (request.equals("Ok"))
                                     success = true;
                             } catch (SocketTimeoutException ignore) {}
@@ -139,7 +145,7 @@ public class ClientThread extends Thread {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             System.err.println("Communication error... " + e);
         } finally {
             try {

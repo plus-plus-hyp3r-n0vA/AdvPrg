@@ -17,16 +17,32 @@ public class GetStatusThread extends Thread
 
     public void run() {
         while(!gameClient.isExit()){
-            try {
-                if(gameClient.isReadyToRead()) {
+            if(gameClient.isReadyToRead()) {
+                try {
                     String myTurnMsg = in.readLine();
-                    System.out.println(myTurnMsg);
+                    if (myTurnMsg.equals("Your turn!")) {
+                        StringBuilder sb = new StringBuilder(myTurnMsg);
+                        while (true) {
+                            try {
+                                myTurnMsg = in.readLine();
+                                sb.append(myTurnMsg).append('\n');
+                            } catch (SocketTimeoutException e) {
+                                break;
+                            }
+                        }
+                        System.out.println(sb.toString());
+                    } else {
+                        System.out.print(myTurnMsg);
+                    }
+                    System.out.flush();
+
                     out.println("Ok");
+                    out.flush();
                 }
-            }
-            catch (SocketTimeoutException ignore) {}
-            catch (IOException e) {
-                e.printStackTrace();
+                catch (SocketTimeoutException ignore) {}
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
