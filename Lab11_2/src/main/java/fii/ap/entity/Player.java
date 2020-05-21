@@ -4,19 +4,21 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Players", schema = "DBA_IP")
+@SequenceGenerator(name="players_seq", allocationSize = 1)
 public class Player {
 
-    private Long id;
+    private Integer id;
     private String name;
-    private String game_id;
+    private Integer game_id;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="players_seq")
     @Column(name = "ID")
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -32,11 +34,11 @@ public class Player {
 
     @Basic
     @Column(name = "GAME_ID")
-    public String getGame_id() {
+    public Integer getGame_id() {
         return game_id;
     }
 
-    public void setGame_id(String game_id) {
+    public void setGame_id(Integer game_id) {
         this.game_id = game_id;
     }
 }

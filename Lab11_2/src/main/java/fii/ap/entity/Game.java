@@ -6,16 +6,16 @@ import javax.persistence.*;
 @Table(name = "Games", schema = "DBA_IP")
 public class Game {
 
-    private Long id;
+    private Integer id;
     private String name;
 
     @Id
     @Column(name = "ID")
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
